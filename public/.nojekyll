@@ -1,0 +1,3 @@
+# GitHub Pages skips Jekyll processing when this file is present.
+# We need this because Next.js static export uses directories like `_next/`
+# which Jekyll would otherwise ignore (names starting with underscore).
