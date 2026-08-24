@@ -21,6 +21,7 @@ Personal portfolio for **Esknder Zinabie**, Lead 3D Architectural Visualizer & C
 - **Styling**: Tailwind CSS 4 with custom design system (Playfair Display + Inter + Sarpanch fonts)
 - **Custom features**: dot+outline cursor with hover-grow, noise overlay, marquee, float animations, text-stroke hero, IntersectionObserver-based reveal animations
 - **Video**: autoplay-on-hover in card grid, full HTML5 controls in lightbox, keyboard navigation (← → arrows, Esc to close)
+- **Git LFS**: All media files (`*.webp`, `*.mp4`, `*.mov`, `*.webm`, `*.jpg`, `*.jpeg`, `*.png`) are tracked via Git LFS
 
 ## Project structure
 
@@ -46,27 +47,37 @@ src/
         ├── project-grid.tsx    # grid state container
         ├── contact-cta.tsx     # proposal buttons + contact cards + file formats
         └── footer.tsx
+public/
+└── projects/                   # 670MB of real archviz media (Git LFS)
+    ├── 01_APARTMENT/
+    ├── 02_MIXED_USE/
+    ├── ... (10 categories, 26 projects, 233 files)
+scripts/
+├── parse_bundle.js             # Extract asset manifest from source bundle
+├── download_assets.js          # Download all 233 media files
+└── gen_projects_ts.js          # Generate src/lib/projects.ts from manifest
 ```
 
-## Restoring project media (670MB)
+## Restoring project media
 
-The 233 real archviz media files (140 webp images + 93 mp4 videos) are excluded from git because of their size. To restore them locally:
+The 233 real archviz media files (140 webp images + 93 mp4 videos, ~670MB) are committed via **Git LFS**. After cloning:
 
 ```bash
-# 1. Fetch the source site's JS bundle
-curl -sL "https://noveld.com.et/assets/index-CXj8XKeF.js" -o /tmp/bundle.js
-
-# 2. Parse the asset manifest from the bundle (extracts 27 projects → /tmp/bundle_parsed.json)
-node scripts/parse_bundle.js
-
-# 3. Download all 233 assets to public/projects/{CATEGORY}/{PROJECT_NAME}/ (~670MB)
-node scripts/download_assets.js
-
-# 4. Regenerate src/lib/projects.ts from the downloaded manifest
-node scripts/gen_projects_ts.js
+git lfs install     # one-time per machine
+git clone https://github.com/hai-png/noveld.git
+cd noveld
+# LFS files auto-download on clone; if not, run:
+git lfs pull
 ```
 
-The scripts are idempotent — re-running them skips files already on disk.
+To re-fetch the media from the original source (if needed):
+
+```bash
+curl -sL "https://noveld.com.et/assets/index-CXj8XKeF.js" -o /tmp/bundle.js
+node scripts/parse_bundle.js
+node scripts/download_assets.js
+node scripts/gen_projects_ts.js
+```
 
 ## Development
 

@@ -53,9 +53,5 @@ server.log
 # Skills directory
 /skills/
 
-# Heavy project media (670MB+) — restored via scripts/parse_bundle.js + scripts/download_assets.js
-# Source: https://noveld.com.et/assets/index-CXj8XKeF.js
-/public/projects/
-
 # Z scripts (dev server tooling)
 .zscripts/
