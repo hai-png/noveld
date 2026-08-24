@@ -21,7 +21,7 @@ Personal portfolio for **Esknder Zinabie**, Lead 3D Architectural Visualizer & C
 - **Styling**: Tailwind CSS 4 with custom design system (Playfair Display + Inter + Sarpanch fonts)
 - **Custom features**: dot+outline cursor with hover-grow, noise overlay, marquee, float animations, text-stroke hero, IntersectionObserver-based reveal animations
 - **Video**: autoplay-on-hover in card grid, full HTML5 controls in lightbox, keyboard navigation (← → arrows, Esc to close)
-- **Git LFS**: All media files (`*.webp`, `*.mp4`, `*.mov`, `*.webm`, `*.jpg`, `*.jpeg`, `*.png`) are tracked via Git LFS
+- **Media**: All 233 archviz files (140 webp + 93 mp4, ~670MB) committed directly to git as binary blobs
 
 ## Project structure
 
@@ -48,29 +48,37 @@ src/
         ├── contact-cta.tsx     # proposal buttons + contact cards + file formats
         └── footer.tsx
 public/
-└── projects/                   # 670MB of real archviz media (Git LFS)
-    ├── 01_APARTMENT/
-    ├── 02_MIXED_USE/
-    ├── ... (10 categories, 26 projects, 233 files)
+└── projects/                   # 670MB of real archviz media (committed directly)
+    ├── 01_APARTMENT/           # 7 projects (ATAKLTI, DSL BOLE, ESKNDER APT, HUGO, JAMBO, MULE APT, YAHHAR)
+    ├── 02_MIXED_USE/           # 2 projects (MNRC, OMAR)
+    ├── 03_COMPETITION/        # 1 project (SYNERGY)
+    ├── 04_HOTEL RESORT/        # 1 project (AKE HOTEL RESORT)
+    ├── 05_MALL/                # 2 projects (MNRC MALL, YEKA)
+    ├── 06_OFFICE/              # 6 projects (alliance, birhan insurance, dugda, MNRC OFFICE, OP 1, OP2)
+    ├── 07_RESDENCE/            # 3 projects (ADIYA, ASTER, ROZINA)
+    ├── 08_LANDSCAPE/           # 1 project (LEGETAFO LANDSCAPE)
+    ├── 09_PROPOSAL/            # 2 projects (HOSPITAL, YEKA PARK)
+    └── 11_CAFE ANDRESTAURANT/  # 1 project (BILOS)
 scripts/
 ├── parse_bundle.js             # Extract asset manifest from source bundle
 ├── download_assets.js          # Download all 233 media files
-└── gen_projects_ts.js          # Generate src/lib/projects.ts from manifest
+└── gen_projects_ts.js           # Generate src/lib/projects.ts from manifest
 ```
 
-## Restoring project media
-
-The 233 real archviz media files (140 webp images + 93 mp4 videos, ~670MB) are committed via **Git LFS**. After cloning:
+## Getting started
 
 ```bash
-git lfs install     # one-time per machine
 git clone https://github.com/hai-png/noveld.git
 cd noveld
-# LFS files auto-download on clone; if not, run:
-git lfs pull
+bun install
+bun run dev          # http://localhost:3000
 ```
 
-To re-fetch the media from the original source (if needed):
+All 233 media files are committed to the repo directly — no LFS or external downloads required.
+
+## Restoring media from source (optional)
+
+If you ever need to re-fetch the media from the original source:
 
 ```bash
 curl -sL "https://noveld.com.et/assets/index-CXj8XKeF.js" -o /tmp/bundle.js
@@ -86,8 +94,6 @@ bun install          # if first run
 bun run dev          # start dev server (port 3000)
 bun run lint         # ESLint check
 ```
-
-The dev server runs automatically in the Z.ai sandbox. The only user-visible route is `/`.
 
 ## Contact
 
