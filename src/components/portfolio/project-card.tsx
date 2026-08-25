@@ -12,6 +12,13 @@ import {
 import type { Project, MediaItem } from "@/lib/projects";
 import { posterFor } from "@/lib/projects";
 
+// Prefix asset paths with the Next.js basePath (empty in dev, "/noveld" in prod)
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH || "";
+function bp(src: string): string {
+  if (!src.startsWith("/")) return src;
+  return `${BASE_PATH}${src}`;
+}
+
 interface ProjectCardProps {
   project: Project;
   index: number;
@@ -176,7 +183,7 @@ export function ProjectCard({ project, index, onOpenLightbox }: ProjectCardProps
                     <Film className="h-3.5 w-3.5" />
                   </span>
                 ) : (
-                  <img src={m.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+                  <img src={bp(m.src)} alt="" loading="lazy" className="h-full w-full object-cover" />
                 )}
               </button>
             ))}
@@ -249,8 +256,8 @@ function MediaSlide({ item, poster, isActive, isPrevious, loaded, onLoaded, vide
       {item.isVideo ? (
         <video
           ref={videoRef}
-          src={item.src}
-          poster={poster}
+          src={bp(item.src)}
+          poster={poster ? bp(poster) : undefined}
           playsInline
           muted
           loop
@@ -259,7 +266,7 @@ function MediaSlide({ item, poster, isActive, isPrevious, loaded, onLoaded, vide
         />
       ) : (
         <img
-          src={item.src}
+          src={bp(item.src)}
           alt={`${item.fileName}`}
           loading="lazy"
           decoding="async"
@@ -345,8 +352,8 @@ export function Lightbox({ project, start, onClose }: LightboxProps) {
           {item.isVideo ? (
             <video
               ref={videoRef}
-              src={item.src}
-              poster={posterFor(project)?.src}
+              src={bp(item.src)}
+              poster={posterFor(project) ? bp(posterFor(project)!.src!) : undefined}
               controls
               autoPlay
               loop
@@ -355,7 +362,7 @@ export function Lightbox({ project, start, onClose }: LightboxProps) {
             />
           ) : (
             <img
-              src={item.src}
+              src={bp(item.src)}
               alt={item.fileName}
               className="max-h-full max-w-full object-contain rounded-lg"
             />
@@ -395,7 +402,7 @@ export function Lightbox({ project, start, onClose }: LightboxProps) {
                 <Play className="h-3.5 w-3.5" />
               </span>
             ) : (
-              <img src={m.src} alt="" loading="lazy" className="h-full w-full object-cover" />
+              <img src={bp(m.src)} alt="" loading="lazy" className="h-full w-full object-cover" />
             )}
           </button>
         ))}

@@ -44,7 +44,7 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Esknder Zinabie" }],
   icons: {
-    icon: "/favicon.svg",
+    icon: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/favicon.svg`,
   },
   openGraph: {
     title: "Esknder Zinabie — Lead 3D Architectural Visualizer & CG Artist",
