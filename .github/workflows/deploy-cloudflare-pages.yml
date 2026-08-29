@@ -30,6 +30,12 @@ concurrency:
   group: deploy-pages-${{ github.ref }}
   cancel-in-progress: true
 
+# Required permissions for cloudflare/pages-action to create GitHub deployment statuses
+permissions:
+  contents: read
+  deployments: write
+  statuses: write
+
 jobs:
   deploy:
     name: Deploy to Cloudflare Pages
