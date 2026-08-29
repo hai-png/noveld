@@ -1,0 +1,16 @@
+# Cloudflare Pages configuration
+# This file tells Cloudflare Pages how to build the dashboard.
+# When you connect this repo to Cloudflare Pages, it will use these settings.
+
+name = "noveld-pay-dashboard"
+compatibility_date = "2026-08-29"
+pages_build_output_dir = "out"
+
+[build]
+command = "npx next build"
+cwd = "."
+
+[vars]
+# The verifier-api URL — set this in Cloudflare Pages dashboard too
+# (Settings → Environment variables → Production)
+NEXT_PUBLIC_API_URL = "https://verifier-api-selfhosted.onrender.com"

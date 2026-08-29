@@ -1,16 +1,14 @@
 import type { NextConfig } from "next";
 
-// basePath is set only for production builds (GitHub Pages at /noveld).
-// Dev server runs at / so local URLs stay clean.
-const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
-
 const nextConfig: NextConfig = {
+  // Static export for Cloudflare Pages — the dashboard is a client-side SPA
+  // that calls the verifier-api on Render. No server-side rendering needed.
   output: "export",
-  basePath: basePath || undefined,
-  assetPrefix: basePath ? basePath + "/" : undefined,
   images: {
-    unoptimized: true,
+    unoptimized: true, // required for static export
   },
+  // Generate a trailing slash on all routes (Cloudflare Pages needs this)
+  trailingSlash: true,
   typescript: {
     ignoreBuildErrors: true,
   },

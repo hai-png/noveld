@@ -55,3 +55,8 @@ server.log
 
 # Z scripts (dev server tooling)
 .zscripts/
+node_modules/
+out/
+.next/
+.env.local
+db/

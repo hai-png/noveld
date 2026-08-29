@@ -1,0 +1,81 @@
+name: Deploy Dashboard to Cloudflare Pages
+
+# Automatic deployment of the Noveld Pay dashboard to Cloudflare Pages.
+# Triggers on every push to main that changes the dashboard code.
+#
+# Prerequisites (set in GitHub repo → Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN  — Cloudflare API token with "Cloudflare Pages:Edit" permission
+#   CLOUDFLARE_ACCOUNT_ID — your Cloudflare account ID
+#
+# After first deploy, Cloudflare will give you a *.pages.dev URL.
+# To use a custom domain (dashboard.noveld.com.et):
+#   1. Cloudflare Pages → your project → Custom domains → Set up a custom domain
+#   2. Add a CNAME record: dashboard.noveld.com.et → <your-project>.pages.dev
+#   3. Cloudflare auto-provisions SSL
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "next.config.ts"
+      - "package.json"
+      - "tsconfig.json"
+      - ".github/workflows/deploy-cloudflare-pages.yml"
+  workflow_dispatch:
+
+# Cancel superseded runs on the same ref
+concurrency:
+  group: deploy-pages-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to Cloudflare Pages
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps || npm install --legacy-peer-deps
+
+      - name: Build static export
+        env:
+          NEXT_PUBLIC_API_URL: https://verifier-api-selfhosted.onrender.com
+        run: npx next build
+
+      - name: Verify build output
+        run: |
+          if [ ! -d "out" ]; then
+            echo "::error::Static export failed — 'out' directory not found"
+            exit 1
+          fi
+          echo "✓ Static export ready: $(ls out/ | wc -l) files"
+
+      - name: Deploy to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: noveld-pay-dashboard
+          directory: out
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summary
+        run: |
+          echo "### Dashboard deployed to Cloudflare Pages" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Project:** noveld-pay-dashboard" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **URL:** https://noveld-pay-dashboard.pages.dev" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Custom domain:** https://dashboard.noveld.com.et (after CNAME setup)" >> "$GITHUB_STEP_SUMMARY"
+          echo "- **Commit:** \`${{ github.sha }}\`" >> "$GITHUB_STEP_SUMMARY"
