@@ -1,56 +1,37 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Sarpanch } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal", "italic"],
-});
-
-const sarpanch = Sarpanch({
-  variable: "--font-sarpanch",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata: Metadata = {
-  title: "Esknder Zinabie — Lead 3D Architectural Visualizer & CG Artist",
-  description:
-    "Esknder Zinabie — Lead 3D Architectural Visualizer with 6+ years of experience. Photorealistic 4K/8K imagery, cinematic walkthroughs, and real-time interactive tours. Based in Addis Ababa, available worldwide.",
-  keywords: [
-    "Esknder Zinabie",
-    "architectural visualization",
-    "archviz",
-    "3D rendering",
-    "CG artist",
-    "walkthrough animation",
-    "aerial animation",
-    "Addis Ababa",
-    "Ethiopia",
-    "D5 Render",
-    "Unreal Engine 5",
-    "3ds Max",
-    "Corona Renderer",
-    "V-Ray",
-  ],
-  authors: [{ name: "Esknder Zinabie" }],
+  title: "Z.ai Code Scaffold - AI-Powered Development",
+  description: "Modern Next.js scaffold optimized for AI-powered development with Z.ai. Built with TypeScript, Tailwind CSS, and shadcn/ui.",
+  keywords: ["Z.ai", "Next.js", "TypeScript", "Tailwind CSS", "shadcn/ui", "AI development", "React"],
+  authors: [{ name: "Z.ai Team" }],
   icons: {
-    icon: `${process.env.NEXT_PUBLIC_BASE_PATH || ""}/favicon.svg`,
+    icon: "https://z-cdn.chatglm.cn/z-ai/static/logo.svg",
   },
   openGraph: {
-    title: "Esknder Zinabie — Lead 3D Architectural Visualizer & CG Artist",
-    description:
-      "Photorealistic 4K/8K imagery, cinematic walkthroughs, and real-time interactive tours. Based in Addis Ababa, available worldwide.",
+    title: "Z.ai Code Scaffold",
+    description: "AI-powered development with modern React stack",
+    url: "https://chat.z.ai",
+    siteName: "Z.ai",
     type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Z.ai Code Scaffold",
+    description: "AI-powered development with modern React stack",
   },
 };
 
@@ -60,9 +41,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${playfair.variable} ${sarpanch.variable} antialiased bg-neutral-950 text-white overflow-x-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}
       >
         {children}
         <Toaster />
