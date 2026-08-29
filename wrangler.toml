@@ -1,16 +1,16 @@
 # Cloudflare Pages configuration
 #
-# NOTE: Cloudflare Pages does NOT support [build] or pages_build_output_dir
-# in wrangler.toml — those must be set in the Cloudflare dashboard when you
-# create the project (or via the GitHub Actions workflow).
+# Valid Pages properties in wrangler.toml:
+# - name (project name)
+# - compatibility_date
+# - pages_build_output_dir (the static output directory)
+# - [vars] (runtime env vars)
 #
-# This file only sets runtime env vars for the deployed Pages function.
-# The build command + output directory are configured in:
-#   - Cloudflare dashboard → your project → Settings → Builds & deployments
-#   - OR .github/workflows/deploy-cloudflare-pages.yml (for CI-based deploys)
+# NOT supported: [build] section (build command + cwd are set in dashboard)
 
 name = "noveld-pay-dashboard"
 compatibility_date = "2026-08-29"
+pages_build_output_dir = "out"
 
 [vars]
 NEXT_PUBLIC_API_URL = "https://verifier-api-selfhosted.onrender.com"

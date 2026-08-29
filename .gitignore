@@ -60,3 +60,4 @@ out/
 .next/
 .env.local
 db/
+package-lock.json
